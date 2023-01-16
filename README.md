@@ -38,6 +38,9 @@ sendFromAddress = "nZ3pBsb9ykUktJHqW5coo2ZkUa1WgZKK61"
 ```
 https://github.com/nformant1/aggUTXO/blob/main/sendFrom.py#L23
 
+This means `nZ3pBsb9ykUktJHqW5coo2ZkUa1WgZKK61` searches for UTXOs until 6000 are covered, send to `nformntrCCWRSRApRFJDQs2YcrMEoy49CL` and the change is send back to `nZ3pBsb9ykUktJHqW5coo2ZkUa1WgZKK61` (address reusage!)
+
+
 The output should look like this:
 ```
 python.exe C:/Users/nformant/PycharmProjects/pyTools/testagg.py
@@ -110,5 +113,6 @@ SENT TRANSACTION
 
 Process finished with exit code 0
 ```
+Link to the transaction: https://chain.so/tx/DOGETEST/cb2e93704e1bdd902fba4d1acfc954f7d6602573a8a841243af85fca59f52e83
 
 No Guarantees or Warranties. Use at own risk!
