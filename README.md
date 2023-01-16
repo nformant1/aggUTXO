@@ -1,12 +1,3 @@
-# aggUTXO
-Add 100 outputs to one input
-
-You must change in main.py your RPC user and password and maybe further stuff from your dogecoin.conf
-
-Also make sure to add your address into the variable aggAddress in line 49.
-
-No Guarantees or Warranties. Use at own risk!
-
 # :rocket: sendFrom
 Collects UTXO from an address stored in sendFromAddress using listunspent
 ```python
@@ -114,5 +105,14 @@ SENT TRANSACTION
 Process finished with exit code 0
 ```
 Link to the transaction: https://chain.so/tx/DOGETEST/cb2e93704e1bdd902fba4d1acfc954f7d6602573a8a841243af85fca59f52e83
+
+No Guarantees or Warranties. Use at own risk!
+
+# aggUTXO
+Add 100 outputs to one input
+
+You must change in main.py your RPC user and password and maybe further stuff from your dogecoin.conf
+
+Also make sure to add your address into the variable aggAddress in line 49.
 
 No Guarantees or Warranties. Use at own risk!
