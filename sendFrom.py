@@ -8,7 +8,7 @@ if __name__ == '__main__':
     rpcuser = "YourRPCUser"
     rpcpassword = "YourRPCPassword"
 
-    # port standard values if not defined
+        # port standard values if not defined
     # use them if you or dont assign those variables at all
     # if you are not merged mining on this node
     # rpcport = 44555
@@ -19,39 +19,55 @@ if __name__ == '__main__':
     # End of dogecoin.conf
 
     rpc = RPC_Connection(rpcuser, rpcpassword, "127.0.0.1", rpcport)
+
+    sendToAddress = "nformntrCCWRSRApRFJDQs2YcrMEoy49CL"
+    sendAmount = 6000
+    sendFromAddress = "nZ3pBsb9ykUktJHqW5coo2ZkUa1WgZKK61"
+
     # Get List of UTXOs
     data = {}
-    data = rpc.command("listunspent")
 
-    # declare some vars
+    #"params": [1, 9999999, [] , true, { "minimumAmount": 5 } ]
+    data = rpc.command("listunspent", params=[1, 9999999, [sendFromAddress] ])
+
+
     txin = []
-    vout = []
-    # dogecoin-cli createrawtransaction "[{\"txid\":\"myid\",\"vout\":0}]" "{\"address\":0.01}"
-    sendToAddress = "nformntrCCWRSRApRFJDQs2YcrMEoy49CL"
-    sendAmount = 100
-    sendFromAddress = "nj7nsJmY7uk5xJEmtZvBTanC8z1ohjGqcJ"
-    counter = 0
-    param = ""
 
     # verbose output (for debugging)
     verbose = 1
     curAmount = 0
     for line in data:
-        if line["spendable"] is True and line["address"] != sendToAddress and line["address"] == sendFromAddress:
+        if line["spendable"] is True:
             curAmount = curAmount + line["amount"]
-            counter = counter + 1
-            comma = ""
-            if counter > 1:
-                comma = ","
             txin.append({"txid": line["txid"], "vout": line["vout"]})
-            param = param + comma + "{\"txid\":\"" + line["txid"] + "\",\"vout\":" + str(line["vout"]) + "}"
             if curAmount > sendAmount:
                 rawtx = {}
                 change = (curAmount - sendAmount - 0.01)
                 param = [txin, {sendToAddress: sendAmount, sendFromAddress: change}]
                 rawtx = rpc.command("createrawtransaction", params=param)
+
+                if verbose == 1:
+                    print ("RAW TRANSACTION")
+                    print (rawtx)
+
                 # decode to extract size data
                 decodedtx = {}
                 decodedtx = rpc.command("decoderawtransaction", params=[rawtx])
-                print(decodedtx)
+                if verbose == 1:
+                    print ("DECODED TRANSACTION")
+                    print(json.dumps(decodedtx, indent=4))
+                    # print(decodedtx)
+                    # rather decode in the core wallet console for debugging
+
+                signrawtx = rpc.command("signrawtransaction", params=[rawtx])
+                if verbose == 1:
+                    print ("SIGNED TRANSACTION")
+                    print(json.dumps(signrawtx, indent=4))
+                    #print(signrawtx)
+                sendtx =""
+                sendtx = rpc.command("sendrawtransaction", params=[signrawtx["hex"]])
+                if verbose == 1:
+                    print ("SENT TRANSACTION")
+                    print(json.dumps(sendtx, indent=4))
+
                 break
